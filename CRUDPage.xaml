@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MauiCRUDAttempt.ViewModels"
+             xmlns:models="clr-namespace:MauiCRUDAttempt.Models"
+             x:DataType="vm:WishlistViewModel"
+             x:Class="MauiCRUDAttempt.CRUDPage"
+             Title="Soovinimekiri">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{OnPlatform Default='+ Add Wishlist', iOS='+'}"
+                 Command="{Binding SetOperatingWishlistCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, *">
+        <VerticalStackLayout Grid.RowSpan="2"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             IsVisible="{Binding IsBusy}">
+            <ActivityIndicator IsRunning="True"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"/>
+            <Label Text="{Binding BusyText}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+
+        <Label Grid.Row="0"
+               Text="Wishlist"
+               FontAttributes="Bold"
+               FontSize="24"
+               Margin="10"
+               Padding="10"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"/>
+
+        <Grid Grid.Row="1"
+              RowDefinitions="*, Auto">
+            <CollectionView Grid.Row="0"
+                            ItemsSource="{Binding Wishlists}"
+                            Margin="10">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="10"
+                                       Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Wishlist">
+                        <Frame Padding="10"
+                               CornerRadius="5"
+                               HasShadow="False"
+                               BackgroundColor="#2A2A2A">
+                            <Grid RowDefinitions="Auto, Auto, Auto"
+                                ColumnDefinitions="*, Auto"
+                                RowSpacing="5">
+                                <Label Grid.Row="0"
+                                    Text="{Binding Name, StringFormat='Name: {0}'}"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    TextColor="#E9E9E9"/>
+                                <Label Grid.Row="1"
+                                    Text="{Binding Price, StringFormat='Amount: {0}'}"
+                                    FontSize="14"
+                                    FontAttributes="Bold"
+                                    TextColor="#E9E9E9"/>
+                                <Label Grid.Row="2"
+                                    Text="{Binding ForWho, StringFormat='Recipient: {0}'}"
+                                    FontSize="14"
+                                    FontAttributes="Bold"
+                                    TextColor="#E9E9E9"/>
+
+                                <Button Grid.Row="0"
+                                        Grid.Column="1"
+                                        Text="Edit"
+                                        Padding="5"
+                                        HeightRequest="30"
+                                        FontSize="12"
+                                        CornerRadius="5"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WishlistViewModel}}, Path=SetOperatingWishlistCommand}"
+                                        CommandParameter="{Binding .}"/>
+
+                                <Button Grid.Row="1"
+                                        Grid.Column="1"
+                                        Text="Del"
+                                        Padding="5"
+                                        HeightRequest="30"
+                                        FontSize="12"
+                                        CornerRadius="5"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WishlistViewModel}}, Path=DeleteWishlistCommand}"
+                                        CommandParameter="{Binding Id}"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <VerticalStackLayout HorizontalOptions="Center"
+                                             VerticalOptions="Center"
+                                             Margin="50">
+                            <Label Text="No Wishlists Found"
+                                   FontSize="30"
+                                   FontAttributes="Bold"
+                                   Margin="100, 450, 100, 100"
+                                   HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+            <VerticalStackLayout Grid.Row="1"
+                     BackgroundColor="#555555"
+                     Padding="10">
+
+                <Grid RowDefinitions="Auto, Auto"
+                    ColumnDefinitions="*, *, *"
+                    Padding="20"
+                    RowSpacing="10"
+                    ColumnSpacing="10">
+
+                    <VerticalStackLayout
+                        Grid.Column="0">
+                        <Label Text="Wished for Item"
+                               TextColor="#E9E9E9"/>
+                        <Frame BorderColor="#DCDCDC"
+                               CornerRadius="5"
+                               Padding="0"
+                               BackgroundColor="Transparent">
+                            <Entry Text="{Binding OperatingWishlist.Name}"
+                                   Placeholder="Wished for Item"
+                                   BackgroundColor="#2A2A2A"
+                                   TextColor="#E9E9E9"/>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1">
+                        <Label Text="Item Price" TextColor="#E9E9E9"/>
+                        <Frame BorderColor="#DCDCDC" CornerRadius="5" Padding="0" BackgroundColor="Transparent">
+                            <Entry Text="{Binding OperatingWishlist.Price}"
+                                   Placeholder="0"
+                                   BackgroundColor="#2A2A2A"
+                                   Keyboard="Numeric"
+                                   TextColor="#E9E9E9"/>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="2">
+                        <Label Text="Whose it for?" TextColor="#E9E9E9"/>
+                        <Frame BorderColor="#DCDCDC"
+                               CornerRadius="5"
+                               Padding="0"
+                               BackgroundColor="Transparent">
+                            <Entry Text="{Binding OperatingWishlist.ForWho}"
+                                   Placeholder="John Doe"
+                                   BackgroundColor="#2A2A2A"
+                                   TextColor="#E9E9E9"/>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <Button Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Text="Create Wishlist"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End"
+                        CornerRadius="5"
+                        Padding="20, 10, 20, 10"
+                        BackgroundColor="#247F2E"
+                        TextColor="White"
+                        Command="{Binding SaveWishlistCommand}">
+                    <Button.Triggers>
+                         <DataTrigger TargetType="Button"
+                         Binding="{Binding OperatingWishlist.Id}"
+                         Value="0">
+                                <Setter Property="Text" Value="Save Wishlist" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                    </Button>
+                </Grid>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+
+
+</ContentPage>
