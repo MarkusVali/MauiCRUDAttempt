@@ -7,12 +7,18 @@
         <VerticalStackLayout>
             <Label
                 Text="Jõuluvana Soovinimekiri"
-                HorizontalOptions="Center"/>
-            <Button 
-                Text="Sisene"
                 HorizontalOptions="Center"
+                FontSize="100"/>
+            <Button 
+                Text="Enter"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
                 Margin="0,6,0,6"
-                Clicked="RedirectToCRUDPage"/>
+                Clicked="RedirectToCRUDPage"
+                CornerRadius="5"
+                Padding="20, 10, 20, 10"
+                BackgroundColor="#247F2E"
+                TextColor="White"/>
         </VerticalStackLayout>
     </Grid>
 
